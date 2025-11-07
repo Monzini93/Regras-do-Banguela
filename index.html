@@ -4,51 +4,49 @@
   <meta charset="UTF-8">
   <title>Regras do Banguela</title>
   <style>
+    * { box-sizing: border-box; }
+    html, body { height: auto; }
     body {
       font-family: 'Poppins', sans-serif;
       background: #f4f4f4;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      height: 100vh;
+      padding: 32px; /* espaço para não cortar nas bordas */
+      margin: 0;
     }
     .placa {
       background: white;
       border: 3px solid #222;
       border-radius: 16px;
       box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
-      max-width: 600px;
-      padding: 28px;
+      width: 100%;
+      max-width: 800px; /* mais larga para caber o título */
+      padding: 32px;
       text-align: left;
+      overflow-wrap: anywhere; /* evita quebras estranhas */
+      page-break-inside: avoid; /* não quebra no meio ao imprimir */
     }
     .titulo {
       text-align: center;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 700;
       color: #e67e22;
-      margin-bottom: 20px;
+      margin: 0 0 24px 0;
       text-transform: uppercase;
     }
-    ol {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin-bottom: 14px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .subitem {
-      margin-left: 24px;
-      font-size: 15px;
-      color: #444;
-    }
-    .assinatura {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 20px;
-      font-style: italic;
-      color: #555;
+    ol { list-style: none; padding: 0; margin: 0; }
+    li { margin-bottom: 14px; font-size: 18px; line-height: 1.6; }
+    .subitem { margin-left: 24px; font-size: 16px; color: #444; }
+    .assinatura { text-align: center; font-weight: 600; margin-top: 24px; font-style: italic; color: #555; }
+
+    /* Regras específicas para impressão */
+    @page { size: A4; margin: 15mm; }
+    @media print {
+      body { background: white; padding: 0; }
+      .placa { box-shadow: none; border-radius: 0; max-width: 100%; border-width: 2px; }
+      .titulo { font-size: 28px; }
+      li { font-size: 16px; }
     }
   </style>
 </head>
