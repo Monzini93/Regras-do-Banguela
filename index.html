@@ -1,132 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Regras do Banguela</title>
-  
+
+  <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  
+
   <style>
-    /* Reset básico e box-sizing */
     :root {
       --cor-destaque: #e67e22;
-      --cor-texto: #333;
+      --cor-texto: #222;
       --cor-texto-secundario: #555;
+      --cor-borda: #222;
+      --largura-max: 720px; /* um pouco mais larga para evitar quebras do título */
     }
 
-    html {
-      box-sizing: border-box;
-    }
-    *, *::before, *::after {
-      box-sizing: inherit;
-    }
+    /* Reset essencial */
+    html { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: inherit; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh; /* 'min-height' é melhor que 'height' para responsividade */
       margin: 0;
-      padding: 1rem; /* Garante espaço nas bordas em telas pequenas */
+      padding: 24px;
+      background: #f4f4f4;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh; /* responsivo, não corta em telas menores */
     }
 
-    /* A "placa" agora é um <article> */
+    /* Cartaz/placa */
     .placa {
-      background: white;
-      border: 3px solid #222;
+      background: #fff;
+      border: 3px solid var(--cor-borda);
       border-radius: 16px;
-      box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
-      max-width: 600px;
-      width: 100%; /* Garante que não ultrapasse o max-width */
-      padding: 28px;
-      text-align: left;
+      box-shadow: 4px 4px 16px rgba(0,0,0,.16);
+      width: 100%;
+      max-width: var(--largura-max);
+      padding: 32px;
+      color: var(--cor-texto);
+      overflow-wrap: anywhere; /* impede cortes estranhos de palavras longas */
+      -webkit-print-color-adjust: exact; /* preserva cores na impressão */
+      print-color-adjust: exact;
     }
 
-    /* O título agora é um <h1> */
-    .titulo {
-      text-align: center;
-      font-size: 30px;
+    header { text-align: center; margin-bottom: 20px; }
+
+    .selo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 2px solid var(--cor-destaque);
+      border-radius: 999px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--cor-destaque);
+      margin-bottom: 10px;
+    }
+
+    h1.titulo {
+      margin: 6px 0 4px 0;
+      font-size: clamp(26px, 3.2vw, 34px);
       font-weight: 700;
       color: var(--cor-destaque);
-      margin-top: 0; /* Remove margem padrão do h1 */
-      margin-bottom: 20px;
       text-transform: uppercase;
     }
 
-    /* --- Mágica da Numeração Automática --- */
+    .sub { margin: 0; color: var(--cor-texto-secundario); font-size: 14px; }
 
-    /* 1. Prepara a lista principal para contagem */
-    .placa > ol {
-      counter-reset: regras-counter; /* Cria um contador chamado 'regras-counter' */
-      list-style: none;
-      padding: 0;
-    }
+    /* Lista numerada automática */
+    .lista-principal { list-style: none; padding: 0; margin: 20px 0 0 0; counter-reset: regras-counter; }
+    .lista-principal > li { counter-increment: regras-counter; margin-bottom: 14px; font-size: 17px; line-height: 1.65; }
+    .lista-principal > li::before { content: counter(regras-counter) "ª — "; font-weight: 700; color: var(--cor-destaque); }
 
-    /* 2. Estiliza cada item da lista principal */
-    .placa > ol > li {
-      counter-increment: regras-counter; /* A cada 'li', incrementa o contador */
-      margin-bottom: 14px;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--cor-texto);
-    }
+    /* Subitens automáticos */
+    .lista-principal ol { list-style: none; padding-left: 26px; margin: 10px 0 0 0; counter-reset: sub-counter; }
+    .lista-principal ol > li { counter-increment: sub-counter; margin-bottom: 8px; font-size: 15px; color: #444; }
+    .lista-principal ol > li::before { content: counter(sub-counter) "ª — "; font-weight: 600; color: var(--cor-texto-secundario); }
 
-    /* 3. Adiciona o número antes de cada item da lista principal */
-    .placa > ol > li::before {
-      content: counter(regras-counter) "ª — "; /* Exibe o contador + "ª — " */
-      font-weight: 700;
-      color: var(--cor-destaque);
-      margin-right: 5px;
-    }
+    .assinatura { text-align: center; font-weight: 600; margin-top: 22px; font-style: italic; color: var(--cor-texto-secundario); }
 
-    /* --- Estilizando a Sub-lista (sem precisar de classe) --- */
+    footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; color: #777; font-size: 12px; }
+    .versao { opacity: .85; }
 
-    /* 1. Prepara a sub-lista (ol dentro de um ol) */
-    ol ol {
-      counter-reset: sub-counter; /* Cria um contador só para ela */
-      list-style: none;
-      padding-left: 24px; /* Mantém o recuo */
-      margin-top: 10px;
-      margin-bottom: 0;
-    }
-
-    /* 2. Estiliza cada item da sub-lista */
-    ol ol li {
-      counter-increment: sub-counter; /* Incrementa o sub-contador */
-      margin-bottom: 8px;
-      font-size: 15px;
-      color: #444;
-    }
-    
-    /* 3. Adiciona o número antes de cada item da sub-lista */
-    ol ol li::before {
-      content: counter(sub-counter) "ª — "; /* Exibe o sub-contador */
-      font-weight: 600;
-      color: var(--cor-texto-secundario);
-      margin-right: 5px;
-    }
-    
-    /* A assinatura agora é um <p> */
-    .assinatura {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 20px;
-      font-style: italic;
-      color: var(--cor-texto-secundario);
+    /* Impressão */
+    @page { size: A4; margin: 14mm; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .placa { box-shadow: none; border-width: 2px; border-radius: 8px; }
+      .selo { border-width: 1.5px; }
     }
   </style>
 </head>
 <body>
+  <article class="placa" role="document" aria-labelledby="titulo">
+    <header>
+      <div class="selo" aria-hidden="true">
+        <!-- Ícone simples de carro em SVG para impressão nítida -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 13l2-6a3 3 0 012.83-2h8.34A3 3 0 0119 7l2 6v4a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-4z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+        Regras Oficiais
+      </div>
+      <h1 id="titulo" class="titulo">Regras do Banguela</h1>
+      <p class="sub">Manual de boa convivência</p>
+    </header>
 
-  <article class="placa">
-    <h1 class="titulo">Regras Oficiais do Banguela 🚗</h1>
-    
-    <ol>
+    <ol class="lista-principal">
       <li>Nunca ofereça bebidas alcoólicas ao motorista (só eu dirijo o Banguela).</li>
       <li>Pode fumar no Banguela (exceto crack, porque fede muito!).</li>
       <li>Somente amigos podem andar no Banguela.</li>
@@ -148,9 +135,13 @@
       <li>Fica instituído que todo rolê no Banguela deve ter pelo menos um elogio ao carro.</li>
       <li>Quem dirigir o Banguela sem ser o dono, deve tratá-lo como se fosse uma relíquia de família.</li>
     </ol>
-    
-    <p class="assinatura">Assinado: Yuri Monzini, dono do Banguela 🧡</p>
-  </article>
 
+    <p class="assinatura">Assinado: Yuri Monzini, dono do Banguela 🧡</p>
+
+    <footer>
+      <span class="versao">Banguela • Honda Fit 2005 • v1.2</span>
+      <span class="data">Impresso em: <script>document.write(new Date().toLocaleDateString('pt-BR'))</script></span>
+    </footer>
+  </article>
 </body>
 </html>
