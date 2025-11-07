@@ -2,80 +2,155 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regras do Banguela</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    * { box-sizing: border-box; }
-    html, body { height: auto; }
+    /* Reset básico e box-sizing */
+    :root {
+      --cor-destaque: #e67e22;
+      --cor-texto: #333;
+      --cor-texto-secundario: #555;
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: #f4f4f4;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding: 32px; /* espaço para não cortar nas bordas */
+      min-height: 100vh; /* 'min-height' é melhor que 'height' para responsividade */
       margin: 0;
+      padding: 1rem; /* Garante espaço nas bordas em telas pequenas */
     }
+
+    /* A "placa" agora é um <article> */
     .placa {
       background: white;
       border: 3px solid #222;
       border-radius: 16px;
       box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
-      width: 100%;
-      max-width: 800px; /* mais larga para caber o título */
-      padding: 32px;
+      max-width: 600px;
+      width: 100%; /* Garante que não ultrapasse o max-width */
+      padding: 28px;
       text-align: left;
-      overflow-wrap: anywhere; /* evita quebras estranhas */
-      page-break-inside: avoid; /* não quebra no meio ao imprimir */
     }
+
+    /* O título agora é um <h1> */
     .titulo {
       text-align: center;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 700;
-      color: #e67e22;
-      margin: 0 0 24px 0;
+      color: var(--cor-destaque);
+      margin-top: 0; /* Remove margem padrão do h1 */
+      margin-bottom: 20px;
       text-transform: uppercase;
     }
-    ol { list-style: none; padding: 0; margin: 0; }
-    li { margin-bottom: 14px; font-size: 18px; line-height: 1.6; }
-    .subitem { margin-left: 24px; font-size: 16px; color: #444; }
-    .assinatura { text-align: center; font-weight: 600; margin-top: 24px; font-style: italic; color: #555; }
 
-    /* Regras específicas para impressão */
-    @page { size: A4; margin: 15mm; }
-    @media print {
-      body { background: white; padding: 0; }
-      .placa { box-shadow: none; border-radius: 0; max-width: 100%; border-width: 2px; }
-      .titulo { font-size: 28px; }
-      li { font-size: 16px; }
+    /* --- Mágica da Numeração Automática --- */
+
+    /* 1. Prepara a lista principal para contagem */
+    .placa > ol {
+      counter-reset: regras-counter; /* Cria um contador chamado 'regras-counter' */
+      list-style: none;
+      padding: 0;
+    }
+
+    /* 2. Estiliza cada item da lista principal */
+    .placa > ol > li {
+      counter-increment: regras-counter; /* A cada 'li', incrementa o contador */
+      margin-bottom: 14px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--cor-texto);
+    }
+
+    /* 3. Adiciona o número antes de cada item da lista principal */
+    .placa > ol > li::before {
+      content: counter(regras-counter) "ª — "; /* Exibe o contador + "ª — " */
+      font-weight: 700;
+      color: var(--cor-destaque);
+      margin-right: 5px;
+    }
+
+    /* --- Estilizando a Sub-lista (sem precisar de classe) --- */
+
+    /* 1. Prepara a sub-lista (ol dentro de um ol) */
+    ol ol {
+      counter-reset: sub-counter; /* Cria um contador só para ela */
+      list-style: none;
+      padding-left: 24px; /* Mantém o recuo */
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    /* 2. Estiliza cada item da sub-lista */
+    ol ol li {
+      counter-increment: sub-counter; /* Incrementa o sub-contador */
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #444;
+    }
+    
+    /* 3. Adiciona o número antes de cada item da sub-lista */
+    ol ol li::before {
+      content: counter(sub-counter) "ª — "; /* Exibe o sub-contador */
+      font-weight: 600;
+      color: var(--cor-texto-secundario);
+      margin-right: 5px;
+    }
+    
+    /* A assinatura agora é um <p> */
+    .assinatura {
+      text-align: center;
+      font-weight: 600;
+      margin-top: 20px;
+      font-style: italic;
+      color: var(--cor-texto-secundario);
     }
   </style>
 </head>
 <body>
-  <div class="placa">
-    <div class="titulo">Regras Oficiais do Banguela 🚗</div>
+
+  <article class="placa">
+    <h1 class="titulo">Regras Oficiais do Banguela 🚗</h1>
+    
     <ol>
-      <li><b>1ª</b> — Nunca ofereça bebidas alcoólicas ao motorista (só eu dirijo o Banguela).</li>
-      <li><b>2ª</b> — Pode fumar no Banguela (exceto crack, porque fede muito!).</li>
-      <li><b>3ª</b> — Somente amigos podem andar no Banguela.</li>
-      <li><b>4ª</b> — É vetada a entrada de mulheres que não sejam: minha mulher, minhas irmãs ou minha mãe. Abre-se exceção apenas para cunhadas e sogra.</li>
-      <li><b>5ª</b> — Em caso de viagens longas, é obrigação da copiloto:
-        <ul class="subitem">
-          <li>1ª — Cuidar das músicas tocadas;</li>
-          <li>2ª — Oferecer lanchinhos e água ao piloto.</li>
-        </ul>
+      <li>Nunca ofereça bebidas alcoólicas ao motorista (só eu dirijo o Banguela).</li>
+      <li>Pode fumar no Banguela (exceto crack, porque fede muito!).</li>
+      <li>Somente amigos podem andar no Banguela.</li>
+      <li>É vetada a entrada de mulheres que não sejam: minha mulher, minhas irmãs ou minha mãe. Abre-se exceção apenas para cunhadas e sogra.</li>
+      <li>Em caso de viagens longas, é obrigação da copiloto:
+        <ol>
+          <li>Cuidar das músicas tocadas;</li>
+          <li>Oferecer lanchinhos e água ao piloto.</li>
+        </ol>
       </li>
-      <li><b>6ª</b> — A copiloto é a <b>única</b> autorizada a reclamar da maneira como o piloto está conduzindo.</li>
-      <li><b>7ª</b> — É proibido deixar lixo dentro do Banguela. Quem sujar, limpa!</li>
-      <li><b>8ª</b> — O passageiro da frente deve avisar sobre radares e buracos (a vida do Banguela é preciosa).</li>
-      <li><b>9ª</b> — É dever do copiloto cantar junto quando a música for boa.</li>
-      <li><b>10ª</b> — Fica terminantemente proibido falar mal do Banguela. Ele sente as coisas.</li>
-      <li><b>11ª</b> — O banco do motorista é sagrado. Ninguém mexe, ajusta ou encosta sem autorização.</li>
-      <li><b>12ª</b> — O ar-condicionado só é ligado se o piloto permitir (ou se o calor virar um caso de sobrevivência).</li>
-      <li><b>13ª</b> — Piadas ruins são bem-vindas, mas só se o piloto rir.</li>
-      <li><b>14ª</b> — Fica instituído que todo rolê no Banguela deve ter pelo menos um elogio ao carro.</li>
-      <li><b>15ª</b> — Quem dirigir o Banguela sem ser o dono, deve tratá-lo como se fosse uma relíquia de família.</li>
+      <li>A copiloto é a <b>única</b> autorizada a reclamar da maneira como o piloto está conduzindo.</li>
+      <li>É proibido deixar lixo dentro do Banguela. Quem sujar, limpa!</li>
+      <li>O passageiro da frente deve avisar sobre radares e buracos (a vida do Banguela é preciosa).</li>
+      <li>É dever do copiloto cantar junto quando a música for boa.</li>
+      <li>Fica terminantemente proibido falar mal do Banguela. Ele sente as coisas.</li>
+      <li>O banco do motorista é sagrado. Ninguém mexe, ajusta ou encosta sem autorização.</li>
+      <li>O ar-condicionado só é ligado se o piloto permitir (ou se o calor virar um caso de sobrevivência).</li>
+      <li>Piadas ruins são bem-vindas, mas só se o piloto rir.</li>
+      <li>Fica instituído que todo rolê no Banguela deve ter pelo menos um elogio ao carro.</li>
+      <li>Quem dirigir o Banguela sem ser o dono, deve tratá-lo como se fosse uma relíquia de família.</li>
     </ol>
-    <div class="assinatura">Assinado: Yuri Monzini, dono do Banguela 🧡</div>
-  </div>
+    
+    <p class="assinatura">Assinado: Yuri Monzini, dono do Banguela 🧡</p>
+  </article>
+
 </body>
 </html>
